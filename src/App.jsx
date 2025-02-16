@@ -12,12 +12,8 @@ import { SnackbarProvider } from "notistack";
 function App() {
   return (
     <AuthProvider>
-      {" "}
-      {/* ✅ Ensure AuthProvider wraps CartProvider */}
       <SnackbarProvider maxSnack={3}>
         <CartProvider>
-          {" "}
-          {/* ✅ Now CartProvider gets AuthContext properly */}
           <Router>
             <Navbar />
             <Routes>

@@ -7,14 +7,12 @@ export const CartProvider = ({ children }) => {
   const { loggedInUser, updateCart } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
 
-  // Load cart initially from loggedInUser
   useEffect(() => {
     if (loggedInUser && loggedInUser.cart) {
       setCart(loggedInUser.cart);
     }
   }, [loggedInUser?.cart]);
 
-  // Sync cart updates only when it actually changes
   useEffect(() => {
     if (
       loggedInUser &&

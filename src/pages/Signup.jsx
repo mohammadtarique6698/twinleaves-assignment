@@ -25,16 +25,13 @@ const Signup = () => {
 
     setTimeout(() => {
       try {
-        // Retrieve existing users or initialize an empty array
         const storedData = localStorage.getItem("users");
         let storedUsers = storedData ? JSON.parse(storedData) : [];
 
-        // Ensure storedUsers is an array
         if (!Array.isArray(storedUsers)) {
           storedUsers = [];
         }
 
-        // Check if username already exists
         const userExists = storedUsers.some(
           (user) => user.username === username.trim().toLowerCase()
         );
@@ -47,7 +44,6 @@ const Signup = () => {
           return;
         }
 
-        // Add new user to the array
         const newUser = {
           username: username.trim().toLowerCase(),
           password: password.trim(),
@@ -56,7 +52,6 @@ const Signup = () => {
 
         storedUsers.push(newUser);
 
-        // Save updated array back to localStorage
         localStorage.setItem("users", JSON.stringify(storedUsers));
 
         enqueueSnackbar("Signup successful! Redirecting to login...", {

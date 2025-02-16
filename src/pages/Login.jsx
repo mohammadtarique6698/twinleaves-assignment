@@ -36,15 +36,12 @@ const Login = () => {
         const enteredUsername = username.trim().toLowerCase();
         const enteredPassword = password.trim();
 
-        // Retrieve stored users from localStorage
         const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
 
-        // Find user by username
         const existingUser = storedUsers.find(
           (u) => u.username.trim().toLowerCase() === enteredUsername
         );
 
-        // If user does not exist, redirect to /signin
         if (!existingUser) {
           enqueueSnackbar("User does not exist. Redirecting to Sign Up...", {
             variant: "warning",
@@ -54,7 +51,6 @@ const Login = () => {
           return;
         }
 
-        // If username is correct but password is incorrect
         if (existingUser.password.trim() !== enteredPassword) {
           enqueueSnackbar("Incorrect password. Please try again.", {
             variant: "error",
@@ -63,7 +59,6 @@ const Login = () => {
           return;
         }
 
-        // If authentication is successful
         enqueueSnackbar("Login successful! Redirecting...", {
           variant: "success",
         });

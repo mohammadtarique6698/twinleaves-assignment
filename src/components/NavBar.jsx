@@ -28,7 +28,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setCurrentUser(loggedInUser);
-  }, [loggedInUser]); // ✅ Tracks `loggedInUser` properly
+  }, [loggedInUser]);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);

@@ -49,7 +49,6 @@ const ProductTable = ({ search, setSearch }) => {
     getProducts();
   }, []);
 
-  // Filtering logic
   const filteredProducts = products.filter(
     (product) =>
       (selectedCategory === "" || product.main_category === selectedCategory) &&
@@ -58,12 +57,10 @@ const ProductTable = ({ search, setSearch }) => {
         product.main_category.toLowerCase().includes(search.toLowerCase()))
   );
 
-  // Open modal with product details
   const handleRowClick = (params) => {
     setSelectedProduct(params.row);
   };
 
-  // Close modal
   const handleCloseModal = () => {
     setSelectedProduct(null);
   };
@@ -193,9 +190,9 @@ const ProductTable = ({ search, setSearch }) => {
             ]}
             getRowId={(row, index) => row.sku_code || `row-${index}`}
             pagination
-            paginationModel={paginationModel} // Control pagination state
-            onPaginationModelChange={setPaginationModel} // Update pagination
-            pageSizeOptions={[10]} // Ensure only 10 rows per page
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            pageSizeOptions={[10]}
             rowHeight={100}
             onRowClick={handleRowClick}
             sx={{
