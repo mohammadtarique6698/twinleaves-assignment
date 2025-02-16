@@ -5,22 +5,22 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const { loggedInUser, updateCart } = useContext(AuthContext);
-  const [cart, setCart] = useState([]);
-
-  useEffect(() => {
-    if (loggedInUser && loggedInUser.cart) {
-      setCart(loggedInUser.cart);
-    }
-  }, [loggedInUser?.cart]);
+  const [cart, setCart] = useState(loggedInUser?.cart || []);
 
   useEffect(() => {
     if (
-      loggedInUser &&
+      loggedInUser?.cart &&
       JSON.stringify(loggedInUser.cart) !== JSON.stringify(cart)
     ) {
+      setCart(loggedInUser.cart);
+    }
+  }, [loggedInUser?.cart]); // ✅ Prevent unnecessary re-renders
+
+  useEffect(() => {
+    if (JSON.stringify(loggedInUser?.cart) !== JSON.stringify(cart)) {
       updateCart(cart);
     }
-  }, [cart]);
+  }, [cart]); // ✅ Only update when cart changes
 
   const addCart = (product) => {
     setCart((prevCart) => {
@@ -43,14 +43,8 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromCart = (sku_code) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.sku_code !== sku_code)
-    );
-  };
-
   return (
-    <CartContext.Provider value={{ cart, addCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addCart }}>
       {children}
     </CartContext.Provider>
   );

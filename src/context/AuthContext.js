@@ -8,16 +8,12 @@ export const AuthProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (storedUser) {
-      setLoggedInUser(storedUser);
-    }
+    const storedUser = localStorage.getItem("loggedInUser");
+    const storedUsers = localStorage.getItem("users");
 
-    const storedUsers = JSON.parse(localStorage.getItem("users"));
-    if (storedUsers) {
-      setUsers(storedUsers);
-    }
-  }, []);
+    if (storedUser) setLoggedInUser(JSON.parse(storedUser));
+    if (storedUsers) setUsers(JSON.parse(storedUsers));
+  }, []); // ✅ Runs only once when the component mounts
 
   const updateCart = useCallback((newCart) => {
     setLoggedInUser((prevUser) => {
@@ -30,8 +26,11 @@ export const AuthProvider = ({ children }) => {
           user.username === updatedUser.username ? updatedUser : user
         );
 
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-        localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+        // ✅ Store only when cart actually changes
+        if (JSON.stringify(prevUser.cart) !== JSON.stringify(newCart)) {
+          localStorage.setItem("users", JSON.stringify(updatedUsers));
+          localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+        }
 
         return updatedUsers;
       });
