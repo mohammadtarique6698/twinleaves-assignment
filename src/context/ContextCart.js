@@ -23,6 +23,7 @@ export const CartProvider = ({ children }) => {
     }
   }, [cart]); // ✅ Only update when cart changes
 
+  // ✅ Function to add item to cart
   const addCart = (product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find(
@@ -44,8 +45,22 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // ✅ Function to remove item from cart
+  const removeFromCart = (sku_code) => {
+    setCart(
+      (prevCart) =>
+        prevCart
+          .map((item) =>
+            item.sku_code === sku_code
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+          .filter((item) => item.quantity > 0) // Remove items with 0 quantity
+    );
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addCart }}>
+    <CartContext.Provider value={{ cart, addCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
