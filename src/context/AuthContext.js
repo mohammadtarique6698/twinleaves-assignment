@@ -13,7 +13,12 @@ export const AuthProvider = ({ children }) => {
 
     if (storedUser) setLoggedInUser(JSON.parse(storedUser));
     if (storedUsers) setUsers(JSON.parse(storedUsers));
-  }, []); // ✅ Runs only once when the component mounts
+  }, []);
+
+  const login = (userData) => {
+    setUsers(userData);
+    localStorage.setItem("loggedInUser", JSON.stringify(userData));
+  };
 
   const updateCart = useCallback((newCart) => {
     setLoggedInUser((prevUser) => {
@@ -26,7 +31,6 @@ export const AuthProvider = ({ children }) => {
           user.username === updatedUser.username ? updatedUser : user
         );
 
-        // ✅ Store only when cart actually changes
         if (JSON.stringify(prevUser.cart) !== JSON.stringify(newCart)) {
           localStorage.setItem("users", JSON.stringify(updatedUsers));
           localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
@@ -40,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ loggedInUser, updateCart }}>
+    <AuthContext.Provider value={{ loggedInUser, updateCart, login }}>
       {children}
     </AuthContext.Provider>
   );
